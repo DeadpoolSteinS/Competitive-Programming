@@ -1,0 +1,6 @@
+# for z.exe
+*.exe
+
+# for setting vscode
+.vscode
+/.vscode
