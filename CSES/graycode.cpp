@@ -21,17 +21,17 @@ void scan(int &angka)
 
 int main()
 {
-    int n; scan(n);
-
-    // total output
-    int x = 1 << n;
-    for(int i = 0; i < x; i++)
+    // n is total output
+    int n; scan(n); n = 1 << n;
+    for(int i = 0; i < n; i++)
     {
-        // 0 = 0, 1 = 1, 2 = 3, 3 = 2, 4 = 6
-        int m = i ^ (i >> 1);
-        for(int j = x >> 1; j != 0; j >>= 1)
+        // get gray code of decimal i
+        int gray = i ^ (i >> 1);
+
+        // convert to binary
+        for(int j = (n >> 1); j > 0; j >>= 1)
         {
-            if(j & m) pc('1');
+            if(gray & j) pc('1');
             else pc('0');
         }
         pc('\n');

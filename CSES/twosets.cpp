@@ -1,60 +1,65 @@
 #include <cstdio>
 #define gc getchar_unlocked
+#define pc putchar_unlocked
+#define ull unsigned long long
 using namespace std;
 
-void scan(int &angka){
+void scan(int &angka)
+{
     angka = 0; bool negative = false; char input = gc();
-    while((input < '0') || (input > '9')){
+    while((input < '0') || (input > '9'))
+    {
         if(input == '-') negative = true;
         input = gc();
     }
-	while(input >= '0' && input <= '9'){
+    while(input >= '0' && input <= '9')
+    {
         angka = (angka << 3) + (angka << 1) + input - 48;
         input = gc();
     }
     if(negative) angka = -angka;
 }
 
-int main(){
-    int n;
-    scan(n);
+void print(int angka)
+{
+    char number[10]; short i = 0;
+    if(angka == 0)
+    {
+        pc('0');
+        return;
+    }
+    while(angka > 0)
+    {
+        number[i++] = angka % 10 + '0';
+        angka /= 10;
+    }
+    while(i--) pc(number[i]);
+}
+
+int main()
+{
+    int n; scan(n);
     
     // sum total is odd
-    if((int)(n+1)/2 & 1) printf("NO\n");
-    else{
-        printf("YES\n");
-        // odd n
-        if(n & 1){
-            printf("%d\n", n/2);
-            for(int i = 4; i <= (n+9)/4; i++){
-                printf("%d %d", i, n-i+4);
-                if(i < (n+9)/4) printf(" ");
-            }
-            if(n > 3) printf(" ");
-            printf("3\n");
-            printf("%d\n", (n+1)/2);
-            for(int i = (n+13)/4; i <= (n+3)/2; i++){
-                printf("%d %d", i, n-i+4);
-                if(i < (n+3)/2) printf(" ");
-            }
-            if(n > 3) printf(" ");
-            printf("1 2\n");
+    if((int)(n+1)/2 & 1)
+    {
+        pc('N'); pc('O'); pc('\n');
+        return 0;
+    }
+    // odd or even identity
+    int k = 1; if(n&1) k = 0;
+
+    pc('Y'); pc('E'); pc('S'); pc('\n');
+    for(int i = k; i <= k+1; i++)
+    {
+        // sum of two sets
+        print((n&1) ? n/2+i : n/2); pc('\n');
+        for(int j = i; j <= n/2; j += 2)
+        {
+            if(j > 0){ print(j); pc(' '); }
+            print(n-j+k); pc(' ');
         }
-        // even n
-        else{
-            printf("%d\n", n/2);
-            for(int i = 1; i <= n/4; i++){
-                printf("%d %d", i, n-i+1);
-                if(i < n/4) printf(" ");
-            }
-            printf("\n");
-            printf("%d\n", n/2);
-            for(int i = n/4+1; i <= n/2; i++){
-                printf("%d %d", i, n-i+1);
-                if(i < n/2) printf(" ");
-            }
-            printf("\n");
-        }
+        pc('\n');
     }
     return 0;
 }

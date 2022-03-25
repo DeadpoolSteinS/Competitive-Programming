@@ -19,9 +19,26 @@ void scan(int &angka)
     if(negative) angka = -angka;
 }
 
+void print(int angka)
+{
+    char number[10]; short i = 0;
+    if(angka == 0)
+    {
+        pc('0');
+        return;
+    }
+    while(angka > 0)
+    {
+        number[i++] = angka % 10 + '0';
+        angka /= 10;
+    }
+    while(i--) pc(number[i]);
+}
+
 void solve(int n, char from, char dist, char to)
 {
-    if(n == 1){
+    if(n == 1)
+    {
         pc(from); pc(' '); pc(to); pc('\n');
     }
     else
@@ -32,9 +49,10 @@ void solve(int n, char from, char dist, char to)
     }
 }
 
-int main(){
+int main()
+{
     int n; scan(n);
-    printf("%d\n", (1 << n) - 1);
+    print((1 << n) - 1); pc('\n');
     solve(n, '1', '2', '3');
     return 0;
 }
