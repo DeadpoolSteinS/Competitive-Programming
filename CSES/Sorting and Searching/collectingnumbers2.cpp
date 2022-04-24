@@ -1,9 +1,7 @@
 #include <cstdio>
 #include <algorithm>
-// #define gc getchar_unlocked
-// #define pc putchar_unlocked
-#define gc getchar
-#define pc putchar
+#define gc getchar_unlocked
+#define pc putchar_unlocked
 #define int long long
 using namespace std;
 
@@ -51,39 +49,54 @@ void print(int angka)
         pc(number[i]);
 }
 
-int solve(int n, int alt[])
+signed main()
 {
-    int rounds = 1;
-    bool arr[n + 1] = {};
-    arr[0] = true;
+    int n, m, rounds = 1;
+    scan(n);
+    scan(m);
+    int arr[n + 2], alt[n + 1];
+    arr[0] = 1;
+    arr[n + 1] = n + 1;
 
     for (int i = 1; i <= n; i++)
     {
-        if (!arr[alt[i] - 1])
-            rounds++;
-        arr[alt[i]] = true;
+        scan(alt[i]);
+        arr[alt[i]] = i;
     }
 
-    return rounds;
-}
-
-signed main()
-{
-    int n, m;
-    scan(n);
-    scan(m);
-    int arr[n + 1], alt[n + 1];
-
     for (int i = 1; i <= n; i++)
-        scan(alt[i]);
+        if (arr[i - 1] > arr[i])
+            rounds++;
 
     while (m--)
     {
         int a, b;
         scan(a);
         scan(b);
+        int x = alt[a], y = alt[b];
         swap(alt[a], alt[b]);
-        print(solve(n, alt));
+
+        if (arr[x - 1] <= arr[x] && arr[x - 1] > b)
+            rounds++;
+        if (arr[x - 1] > arr[x] && arr[x - 1] <= b)
+            rounds--;
+        if (arr[x + 1] >= arr[x] && arr[x + 1] < b)
+            rounds++;
+        if (arr[x + 1] < arr[x] && arr[x + 1] >= b)
+            rounds--;
+        arr[x] = b;
+
+        if (arr[y - 1] <= arr[y] && arr[y - 1] > a)
+            rounds++;
+        if (arr[y - 1] > arr[y] && arr[y - 1] <= a)
+            rounds--;
+        if (arr[y + 1] >= arr[y] && arr[y + 1] < a)
+            rounds++;
+        if (arr[y + 1] < arr[y] && arr[y + 1] >= a)
+            rounds--;
+        arr[y] = a;
+
+        print(rounds);
         pc('\n');
     }
     return 0;
