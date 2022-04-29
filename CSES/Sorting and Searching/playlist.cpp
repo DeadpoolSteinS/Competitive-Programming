@@ -1,9 +1,7 @@
 #include <cstdio>
-#include <algorithm>
+#include <unordered_set>
 #define gc getchar_unlocked
 #define pc putchar_unlocked
-// #define gc getchar
-// #define pc putchar
 #define int long long
 using namespace std;
 
@@ -37,7 +35,7 @@ void print(int angka)
     else if (angka < 0)
     {
         pc('-');
-        return;
+        angka *= -1;
     }
 
     char number[20];
@@ -51,26 +49,31 @@ void print(int angka)
         pc(number[i]);
 }
 
-const int MAX = 1e3;
-
 signed main()
 {
-    int n, maksimal = 0;
+    int n, maksimum = 0;
     scan(n);
-    int arr[n], marked[MAX] = {};
+    int k[n];
 
     for (int i = 0; i < n; i++)
-        scan(arr[i]);
+        scan(k[i]);
 
-    for (int i = 0, j = 0; i < n; i++)
+    unordered_set<int> arr;
+    arr.reserve(n);
+
+    for (int i = 0, b = 0; i < n; i++, b++)
     {
-        while (marked[arr[i]])
-            marked[arr[j++]] = 0;
-        marked[arr[i]] = true;
-        maksimal = max(maksimal, i - j + 1);
+        // if exist delete in front
+        while (arr.find(k[i]) != arr.end())
+            arr.erase(k[i - (b--)]);
+        arr.insert(k[i]);
+
+        // get maksimum sequence
+        if (b > maksimum)
+            maksimum = b;
     }
 
-    print(maksimal);
+    print(maksimum + 1);
     pc('\n');
     return 0;
 }
